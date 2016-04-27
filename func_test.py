@@ -5,19 +5,22 @@ import unittest
 
 class NewVisitorTest(unittest.TestCase):
     def setUp(self):
+        print('setUp')
         self.brower = webdriver.Firefox()
-        
+        self.brower.implicitly_wait(5)
+        print('test can start')  
     def tearDown(self):
+        print('tearDown')
         self.brower.quit()
         
     def test_can_start_a_list_and_retrieve_it_later(self):
-                
+             
         #老王听说有一个很酷的在线待办事项应用
         #他去看了这个应用的首页
         self.brower.get('http://localhost:8000')
         #他注意到网页的标题盒头部都包含“To-Do”这个词
-        self.assertIn('To-Do',brower.title)
-        sefl.fail('finish the test!')
+        self.assertIn('To-Do',self.brower.title)
+        self.fail('finish the test!')
         
         
         #应用邀请他输入一个待办事项
@@ -36,9 +39,14 @@ class NewVisitorTest(unittest.TestCase):
         #而且页面中有一些文字解说这个功能
         #他访问这个URL，发现他的待办事项还在。
         #老王很满意，去吃饭利。
-        self.brower.quite()
+
     if __name__ == '__main__':
+        print('k')
         unittest.main()
+        print('p')
+       
+        
+       
 
 
 
