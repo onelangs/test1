@@ -5,12 +5,9 @@ import unittest
 
 class NewVisitorTest(unittest.TestCase):
     def setUp(self):
-        print('setUp')
         self.brower = webdriver.Firefox()
         self.brower.implicitly_wait(5)
-        print('test can start')  
     def tearDown(self):
-        print('tearDown')
         self.brower.quit()
         
     def test_can_start_a_list_and_retrieve_it_later(self):
@@ -41,11 +38,8 @@ class NewVisitorTest(unittest.TestCase):
         #老王很满意，去吃饭利。
 
     if __name__ == '__main__':
-        print('k')
         unittest.main()
-        print('p')
        
-        
        
 
 
