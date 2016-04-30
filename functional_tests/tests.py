@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 #-*- coding:utf8 _*_
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import unittest
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
     
     def setUp(self):
         self.brower = webdriver.Firefox()
@@ -24,7 +25,7 @@ class NewVisitorTest(unittest.TestCase):
              
         #老王听说有一个很酷的在线待办事项应用
         #他去看了这个应用的首页
-        self.brower.get('http://localhost:8000')
+        self.brower.get(self.live_server_url)
         #他注意到网页的标题盒头部都包含“To-Do”这个词
         self.assertIn('To-Do',self.brower.title)
         header_text = self.brower.find_element_by_tag_name('h1').text
@@ -79,9 +80,9 @@ class NewVisitorTest(unittest.TestCase):
         #老王很满意，去吃饭利。
         self.fail('finish the test!')
 
-
-if __name__ == '__main__':
-    unittest.main()
+#
+#if __name__ == '__main__':
+#    unittest.main()
        
        
 
