@@ -4,9 +4,11 @@ from selenium import webdriver
 import unittest
 
 class NewVisitorTest(unittest.TestCase):
+    
     def setUp(self):
         self.brower = webdriver.Firefox()
         self.brower.implicitly_wait(5)
+
     def tearDown(self):
         self.brower.quit()
         
@@ -16,7 +18,7 @@ class NewVisitorTest(unittest.TestCase):
         #他去看了这个应用的首页
         self.brower.get('http://localhost:8000')
         #他注意到网页的标题盒头部都包含“To-Do”这个词
-        self.assertIn('To-Do',self.brower.title)
+        self.assertIn('To-Do list',self.brower.title)
         self.fail('finish the test!')
         
         
@@ -37,8 +39,8 @@ class NewVisitorTest(unittest.TestCase):
         #他访问这个URL，发现他的待办事项还在。
         #老王很满意，去吃饭利。
 
-    if __name__ == '__main__':
-        unittest.main()
+if __name__ == '__main__':
+    unittest.main()
        
        
 
