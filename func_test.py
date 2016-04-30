@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #-*- coding:utf8 _*_
 from selenium import webdriver
-from selenium.webdriver.common import keys
+from selenium.webdriver.common.keys import Keys
 import unittest
 
 class NewVisitorTest(unittest.TestCase):
@@ -33,10 +33,11 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys('买一本书')
         #他按回车键后，页面更新了
         #待办事项表格中显示了”1：买一本书“
-        inputbox.send_keys(keys.ENTER)
+        inputbox.send_keys(Keys.ENTER)
         table = self.brower.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(any(row.text == '1:买一本书' for row in rows))
+        self.assertTrue(any(row.text == '1:买一本书' for row in rows),
+                        "New to-do did not appear in table")
         
         #页面中又显示利一个文本框，可以输入其他待办事项
         #他又输入了”看书后思考“
