@@ -22,10 +22,23 @@ SECRET_KEY = '$x2fuasi2_m+r__cym(j5l$%1@1wy3eola8!ei(c-a9d=k5joz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = []
-
+#
+#TEMPLATES = [
+#    {
+#        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+#        'DIRS': [os.path.join(BASE_DIR, "lists", "templates")],  # list
+#        'APP_DIRS': True,
+#        'OPTIONS': {
+#            # ... some options here ...
+#            'debug': DEBUG,
+#                       
+#
+#        },
+#    },
+#]
 
 # Application definition
 
