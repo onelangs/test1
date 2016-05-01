@@ -39,10 +39,16 @@ class NewVisitorTest(LiveServerTestCase):
         #他在一个文本框中输入了"买一本书"
         #老王爱看书
         inputbox.send_keys('买一本书')
-        #他按回车键后，页面更新了
-        #待办事项表格中显示了”1：买一本书“
+        #他按回车键后，页面更新了  -- 作废
+        #待办事项表格中显示了”1：买一本书“  -- 作废
+        #他按回车后，被带到了一个新URL
+        #这个页面的待办事项清单中显示了“1:买一本书”
+
         inputbox.send_keys(Keys.ENTER)
+        edith_list_url = self.brower.current_url
+        self.assertRegex(edith_list_url,'/lists/.+')
         self.check_for_row_in_list_table('1:买一本书')
+        
        
 #        table = self.brower.find_element_by_id('id_list_table')
 #        rows = table.find_elements_by_tag_name('tr')
@@ -63,23 +69,40 @@ class NewVisitorTest(LiveServerTestCase):
         #页面再次更新，他的清单中显示了两个待办事项
         self.check_for_row_in_list_table("1:买一本书")
         self.check_for_row_in_list_table("2:看书后思考")
-#        table = self.brower.find_element_by_id('id_list_table')
-#        rows = table.find_elements_by_tag_name('tr')
-#        self.assertIn('1:买一本书',[row.text for row in rows],
-#                        "New to-do did not appear in table -- its text was:\n%s" %(
-#                        table.text,
-#                        ))        
-#        self.assertIn('2:看书后思考',[row.text for row in rows],
-#                        "New to-do did not appear in table -- its text was:\n%s" %(
-#                        table.text,
-#                        ))
-        #老王想知道这个网站是否会记住他的清单
-        #他看到利网站为他生成了一个唯一的URL
-        #而且页面中有一些文字解说这个功能
-        #他访问这个URL，发现他的待办事项还在。
-        #老王很满意，去吃饭利。
-        self.fail('finish the test!')
+        
+        #现在一个叫老李的新用户访问利网站
+        
+        ##我们使用一个新浏览器会话
+        ##确保老王的信息不会从cookie中泄露出来。
+        self.brower.quit()
+        self.brower = webdriver.Firefox()
+        
+        #老李访问首页
+        #页面中看不到老王的清单
+        self.brower.get(self.live_server_url)
+        page_text = self.brower.find_element_by_tag_name('body').text
+        self.assertNotIn('1:买一本书',page_text)
+        self.assertNotIn('2:看书后思考',page_text)
+        
+        #老李输入一个新待办事项，新建一个清单
+        #她不像老王一样兴趣盎然
+        inputbox = self.brower.find_element_by_id('id_new_item')
+        inputbox.send_keys('买牛奶')
+        inputbox.send_keys(Keys.ENTER)
+        
+        #老李获得了他的唯一URL
+        laoli_list_url = self.brower.current_url
+        self.assertRegex(laoli_list_url,'/lists/.+')
+        self.assertNotEqual(laoli_list_url,edith_list_url)
+        
+        #这个页面还是没有老王的清单
+        page_text = self.brower.find_element_by_tag_name('body').text
+        self.assertNotIn('1:买一本书',page_text)
+        self.assertNotIn('2:看书后思考',page_text)
+        self.assertIn('1:买牛奶',page_text)
+        #两人很满意，睡觉去了
 
+       
 #
 #if __name__ == '__main__':
 #    unittest.main()
