@@ -26,6 +26,12 @@ class NewVisitorTest(LiveServerTestCase):
         #老王听说有一个很酷的在线待办事项应用
         #他去看了这个应用的首页
         self.brower.get(self.live_server_url)
+        self.brower.set_window_size(1024,768)
+        
+        #他看到输入框完美居中
+        inputbox = self.brower.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(inputbox.location['x'] + inputbox.size['width']/2,512,delta=5)
+        
         #他注意到网页的标题盒头部都包含“To-Do”这个词
         self.assertIn('To-Do',self.brower.title)
         header_text = self.brower.find_element_by_tag_name('h1').text
@@ -48,6 +54,10 @@ class NewVisitorTest(LiveServerTestCase):
         edith_list_url = self.brower.current_url
         self.assertRegex(edith_list_url,'/lists/.+')
         self.check_for_row_in_list_table('1:买一本书')
+        
+        #他看到新建的清单，输入框仍然完美居中
+        inputbox = self.brower.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(inputbox.location['x'] + inputbox.size['width']/2,512,delta=5)
         
        
 #        table = self.brower.find_element_by_id('id_list_table')
