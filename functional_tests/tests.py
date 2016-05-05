@@ -5,9 +5,25 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import unittest
+import sys
 
 class NewVisitorTest(StaticLiveServerTestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        for arg in sys.argv:
+            if 'liveserver' in arg:
+                cls.server_url = 'http://' + arg.split('=')[1]
+                return
+        super().setUpClass()
+        cls.server_url = cls.live_server_url
+        
     
+    @classmethod
+    def tearDownClass(cls):
+        if cls.server_url == cls.live_server_url:
+            super().tearDownClass()
+            
     def setUp(self):
         self.brower = webdriver.Firefox()
         self.brower.implicitly_wait(5)
@@ -26,7 +42,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
              
         #老王听说有一个很酷的在线待办事项应用
         #他去看了这个应用的首页
-        self.brower.get(self.live_server_url)
+        self.brower.get(self.server_url)
         self.brower.set_window_size(1024,768)
         
         #他看到输入框完美居中
@@ -90,7 +106,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         
         #老李访问首页
         #页面中看不到老王的清单
-        self.brower.get(self.live_server_url)
+        self.brower.get(self.server_url)
         page_text = self.brower.find_element_by_tag_name('body').text
         self.assertNotIn('1:买一本书',page_text)
         self.assertNotIn('2:看书后思考',page_text)
@@ -113,6 +129,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertIn('1:买牛奶',page_text)
         #两人很满意，睡觉去了
 
+    def test_layout_and_styling(self):
+        #老王访问首页
+        self.brower.get(self.server_url)
        
 #
 #if __name__ == '__main__':
